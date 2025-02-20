@@ -137,11 +137,18 @@ export const useCamera = () => {
       const xStart = (video.videoWidth - size) / 2;
       const yStart = (video.videoHeight - size) / 2;
 
+      // Mirror the context for front camera
+      ctx.scale(-1, 1);
+      ctx.translate(-size, 0);
+
       ctx.drawImage(
         video,
         xStart, yStart, size, size,
         0, 0, size, size
       );
+
+      // Reset transform
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
 
       const photo = canvas.toDataURL('image/jpeg', 0.9);
       console.log('Photo taken successfully');
