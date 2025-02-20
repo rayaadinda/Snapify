@@ -163,7 +163,7 @@ export const PhotoBooth = () => {
                 </h1>
                 <div className="space-y-4 text-gray-600">
                   <p className="text-base sm:text-lg md:text-xl">
-                    Create memories that last forever with our vintage-style photo booth!
+                    Create memories that last forever with our photobooth!
                   </p>
                   <ul className="space-y-3 text-left max-w-md mx-auto text-sm sm:text-base">
                     <li className="flex items-center gap-2">
@@ -176,7 +176,7 @@ export const PhotoBooth = () => {
                       <svg className="w-5 h-5 flex-shrink-0 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                       </svg>
-                      <span>5-second countdown between each shot</span>
+                      <span>3-second countdown between each shot</span>
                     </li>
                     <li className="flex items-center gap-2">
                       <svg className="w-5 h-5 flex-shrink-0 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">

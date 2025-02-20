@@ -2,26 +2,61 @@ import React, { useState } from 'react';
 
 export const PrivacyNotice = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isMinimized, setIsMinimized] = useState(false);
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-4 py-3 md:p-6 z-40">
-      <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-        <div className="flex-1 min-w-0">
-          <h3 className="text-sm font-semibold text-gray-900 mb-1">🔒 Privacy First</h3>
-          <p className="text-sm font-medium text-gray-600 break-words">
-            Your photos stay private. We don't store, collect, or share any of your photos - 
-            everything happens locally in your browser.
-          </p>
+    <>
+      {/* Minimized State */}
+      {isMinimized ? (
+        <button
+          onClick={() => setIsMinimized(false)}
+          className="fixed bottom-4 right-4 bg-black text-white rounded-full p-3 shadow-lg z-40 hover:bg-black/90"
+          aria-label="Show Privacy Notice"
+        >
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+          </svg>
+        </button>
+      ) : (
+        <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-4 py-3 md:p-6 z-40">
+          <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-2">
+                <span className="text-sm font-semibold text-gray-900">🔒 Privacy First</span>
+                <button
+                  onClick={() => setIsMinimized(true)}
+                  className="text-gray-400 hover:text-gray-500 sm:hidden"
+                  aria-label="Minimize Privacy Notice"
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+              </div>
+              <p className="text-sm font-medium text-gray-600 break-words mt-1">
+                Your photos stay private. We don't store, collect, or share any of your photos.
+              </p>
+            </div>
+            <div className="flex items-center gap-4 self-stretch sm:self-center">
+              <button
+                onClick={() => setIsOpen(true)}
+                className="text-sm font-medium text-gray-600 hover:text-gray-900 whitespace-nowrap"
+              >
+                Learn more
+              </button>
+              <button
+                onClick={() => setIsMinimized(true)}
+                className="hidden sm:block text-gray-400 hover:text-gray-500"
+                aria-label="Minimize Privacy Notice"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+            </div>
+          </div>
         </div>
-        <div className="flex items-center gap-4 self-stretch sm:self-center">
-          <button
-            onClick={() => setIsOpen(!isOpen)}
-            className="text-sm font-medium text-gray-600 hover:text-gray-900 whitespace-nowrap"
-          >
-            Learn more
-          </button>
-        </div>
-      </div>
+      )}
 
       {/* Privacy Policy Modal */}
       {isOpen && (
@@ -86,6 +121,6 @@ export const PrivacyNotice = () => {
           </div>
         </div>
       )}
-    </div>
+    </>
   );
 };
