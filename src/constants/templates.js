@@ -4,8 +4,9 @@ export const PHOTO_STRIP_TEMPLATES = [
     name: 'Classic',
     background: 'white',
     styles: {
-      container: 'bg-white',
-      photo: 'rounded-lg shadow-sm',
+      container: 'bg-white rounded-lg shadow-lg',
+      photo: 'rounded-none', 
+      background: '#ffffff'
     }
   },
   {
@@ -13,8 +14,9 @@ export const PHOTO_STRIP_TEMPLATES = [
     name: 'Vintage',
     background: 'sepia',
     styles: {
-      container: 'sepia bg-amber-50',
-      photo: 'rounded-lg shadow-md border border-amber-200',
+      container: 'bg-[#f5e6d3] rounded-lg shadow-lg',
+      photo: 'rounded-none sepia brightness-95 contrast-105',
+      background: '#f5e6d3'
     }
   },
   {
@@ -22,8 +24,9 @@ export const PHOTO_STRIP_TEMPLATES = [
     name: 'Modern',
     background: 'gradient',
     styles: {
-      container: 'bg-gradient-to-b from-purple-100 to-pink-100',
-      photo: 'rounded-lg shadow-lg ring-1 ring-black ring-opacity-5',
+      container: 'bg-gradient-to-b from-rose-100 to-teal-100 rounded-lg shadow-lg',
+      photo: 'rounded-none shadow-sm',
+      background: '#fff1f2'
     }
   }
 ];

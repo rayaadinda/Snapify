@@ -7,42 +7,40 @@ export const Preview = ({ photos, template, onReset }) => {
   const [stripDimensions, setStripDimensions] = useState({ width: 0, height: 0 });
   const [containerWidth, setContainerWidth] = useState(0);
 
-  // Base dimensions for the photo strip
+  // Fixed dimensions based on the template
   const BASE_STRIP_WIDTH = 400; // Maximum width for desktop
   const MIN_STRIP_WIDTH = 280; // Minimum width for mobile
-  const PHOTO_ASPECT_RATIO = 3/4;
-  const PHOTO_SPACING = 48; // pixels
-  const PADDING = 24; // pixels
+  const PHOTO_ASPECT_RATIO = 1/1; // Standard photo aspect ratio
+  const PHOTO_GAP = 16; // 16px gap between photos
+  const STRIP_PADDING = 32; // 32px padding around the strip
+  const STRIP_ASPECT_RATIO = 1/3.5; // Overall strip aspect ratio
 
   useEffect(() => {
     const updateDimensions = () => {
       const container = stripRef.current?.parentElement;
       if (!container) return;
 
-      // Get container width and calculate strip width
       const containerWidth = container.offsetWidth;
       setContainerWidth(containerWidth);
 
       // Calculate strip width based on container size
       const stripWidth = Math.min(
-        Math.max(containerWidth - 32, MIN_STRIP_WIDTH), // 32px for padding
+        Math.max(containerWidth - 32, MIN_STRIP_WIDTH),
         BASE_STRIP_WIDTH
       );
 
-      // Calculate total height
-      const photoHeight = stripWidth * PHOTO_ASPECT_RATIO;
-      const totalHeight = (photoHeight * 3) + (PHOTO_SPACING * 2) + (PADDING * 2);
+      // Calculate dimensions based on the fixed aspect ratios
+      const photoWidth = stripWidth - (STRIP_PADDING * 2);
+      const photoHeight = photoWidth / PHOTO_ASPECT_RATIO;
+      const totalHeight = (photoHeight * 3) + (PHOTO_GAP * 2) + (STRIP_PADDING * 2);
 
       setStripDimensions({
-        width: stripWidth + (PADDING * 2),
+        width: stripWidth,
         height: totalHeight
       });
     };
 
-    // Initial calculation
     updateDimensions();
-
-    // Update dimensions on resize
     window.addEventListener('resize', updateDimensions);
     return () => window.removeEventListener('resize', updateDimensions);
   }, []);
@@ -66,7 +64,7 @@ export const Preview = ({ photos, template, onReset }) => {
       const canvas = await html2canvas(stripClone, {
         scale: 2,
         useCORS: true,
-        backgroundColor: null,
+        backgroundColor: template.styles.background || '#ffffff',
         width: stripDimensions.width,
         height: stripDimensions.height,
         logging: false,
@@ -83,8 +81,8 @@ export const Preview = ({ photos, template, onReset }) => {
     }
   };
 
-  const stripWidth = stripDimensions.width - (PADDING * 2);
-  const photoHeight = stripWidth * PHOTO_ASPECT_RATIO;
+  const photoWidth = stripDimensions.width - (STRIP_PADDING * 2);
+  const photoHeight = photoWidth / PHOTO_ASPECT_RATIO;
 
   return (
     <div className="flex flex-col items-center w-full max-w-2xl mx-auto p-4">
@@ -94,21 +92,20 @@ export const Preview = ({ photos, template, onReset }) => {
       <div className="w-full mb-6 md:mb-8">
         <div 
           ref={stripRef}
-          className={`mx-auto bg-white rounded-lg overflow-hidden shadow-lg p-4 md:p-6 ${
-            template.background === 'sepia' ? 'sepia' : 
-            template.background === 'gradient' ? 'bg-gradient-to-b from-purple-100 to-pink-100' : ''
-          }`}
+          className={`mx-auto overflow-hidden ${template.styles.container}`}
           style={{
             width: stripDimensions.width ? `${stripDimensions.width}px` : '100%',
+            padding: `${STRIP_PADDING}px`,
+            backgroundColor: template.styles.background || '#ffffff',
           }}
         >
           <div className="flex flex-col">
             {photos.map((photo, index) => (
               <React.Fragment key={index}>
                 <div 
-                  className="w-full rounded-lg overflow-hidden"
+                  className={`w-full overflow-hidden ${template.styles.photo}`}
                   style={{
-                    height: photoHeight ? `${photoHeight}px` : 'auto'
+                    height: photoHeight ? `${photoHeight}px` : 'auto',
                   }}
                 >
                   <img
@@ -118,7 +115,7 @@ export const Preview = ({ photos, template, onReset }) => {
                   />
                 </div>
                 {index < photos.length - 1 && (
-                  <div style={{ height: `${PHOTO_SPACING}px` }} />
+                  <div style={{ height: `${PHOTO_GAP}px` }} />
                 )}
               </React.Fragment>
             ))}

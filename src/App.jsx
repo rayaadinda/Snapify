@@ -3,6 +3,7 @@ import logo from './assets/logo.png';
 import hero from './assets/hero.png';
 import { Button } from './components/ui/button';
 import { PhotoBooth } from './components/photobooth/PhotoBooth';
+import { PrivacyNotice } from './components/PrivacyNotice';
 
 function App() {
   const [showPhotoBooth, setShowPhotoBooth] = useState(false);
@@ -24,7 +25,10 @@ function App() {
               Back to Home
             </Button>
           </div>
-          <PhotoBooth />
+          <main className="flex-1">
+            <PhotoBooth />
+          </main>
+          <PrivacyNotice />
         </div>
       </div>
     );
