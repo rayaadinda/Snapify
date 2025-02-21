@@ -88,8 +88,8 @@ export const Preview = ({ photos, template, onReset }) => {
     <div className="flex flex-col items-center w-full max-w-2xl mx-auto p-4">
       <h2 className="text-xl md:text-2xl font-semibold mb-4 md:mb-6 text-center">Your Photo Strip</h2>
       
-      {/* Photo Strip Preview */}
-      <div className="w-full mb-6 md:mb-8">
+    
+      <div className="max-w-xl mb-6 md:mb-8">
         <div 
           ref={stripRef}
           className={`mx-auto overflow-hidden ${template.styles.container}`}
