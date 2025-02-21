@@ -20,7 +20,6 @@ export const PrivacyNotice = ({ forceHide = false }) => {
 
   return (
     <AnimatePresence>
-      {/* Minimized State */}
       {isMinimized ? (
         <motion.button
           initial={{ opacity: 0, scale: 0.8 }}

@@ -72,6 +72,7 @@ export const PhotoBooth = () => {
 
   const handleNext = () => {
     if (photos.length === 3) {
+      stopCamera();
       setShowPreview(true);
     }
   };
@@ -81,7 +82,7 @@ export const PhotoBooth = () => {
       <Preview
         photos={photos}
         template={selectedTemplate}
-        onReset={handleReset}
+        onBack={handleReset}
       />
     );
   }
