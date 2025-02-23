@@ -5,6 +5,7 @@ import { Button } from "./components/ui/button"
 import { PhotoBooth } from "./components/photobooth/PhotoBooth"
 import { PrivacyNotice } from "./components/PrivacyNotice"
 import { Analytics } from "@vercel/analytics/react"
+import { motion, AnimatePresence } from "framer-motion"
 
 function App() {
 	const [showPhotoBooth, setShowPhotoBooth] = useState(false)
@@ -75,7 +76,11 @@ function App() {
 						</h1>
 					</div>
 
-					<div className="w-full flex items-center justify-center max-w-md md:max-w-2xl mb-8 md:mb-12 px-4">
+					<motion.div
+						initial={{ opacity: 0, y: -20 }}
+						animate={{ opacity: 1, y: 0 }}
+						className="w-full flex items-center justify-center max-w-md md:max-w-2xl mb-8 md:mb-12 px-4"
+					>
 						<img
 							src={hero}
 							alt="Photo collage"
@@ -83,7 +88,7 @@ function App() {
 							height={500}
 							className="object-contain"
 						/>
-					</div>
+					</motion.div>
 
 					<Button
 						variant="default"
