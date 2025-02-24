@@ -79,7 +79,7 @@ function App() {
 					<motion.div
 						initial={{ opacity: 0, y: -20 }}
 						animate={{ opacity: 1, y: 0 }}
-						className="w-full flex items-center justify-center max-w-md md:max-w-2xl mb-8 md:mb-12 px-4"
+						className="w-full flex items-center justify-center max-w-md md:max-w-2xl mb-4 md:mb-8 px-4"
 					>
 						<img
 							src={hero}
