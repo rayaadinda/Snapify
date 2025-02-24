@@ -9,7 +9,7 @@ import { motion, AnimatePresence } from "framer-motion"
 import { Toaster, toast } from 'react-hot-toast'
 
 
-const APP_VERSION = '1.1.0' 
+const APP_VERSION = '1.2.0' 
 const APP_VERSION_KEY = 'snapify-version'
 
 function App() {
@@ -40,11 +40,7 @@ function App() {
 										New Features Available! 🎉
 									</p>
 									<p className="mt-1 text-sm font-medium text-gray-500">
-										• New photo filters: B&W & Vintage
-										<br />
-										• Improved photo quality
-										<br />
-										• Better filter preview
+										• New photo template
 									</p>
 								</div>
 							</div>
