@@ -24,6 +24,14 @@ export const PhotoBooth = () => {
 	const [isCapturing, setIsCapturing] = useState(false)
 	const [showPreview, setShowPreview] = useState(false)
 	const [countdownActive, setCountdownActive] = useState(false)
+	const [selectedFilter, setSelectedFilter] = useState('none'); // none, bw, sepia, vintage
+
+	const filterStyles = {
+		none: '',
+		bw: 'grayscale(100%)',
+		sepia: 'sepia(100%)',
+		vintage: 'sepia(50%) contrast(85%) brightness(90%)',
+	};
 
 	useEffect(() => {
 		return () => {
@@ -42,9 +50,9 @@ export const PhotoBooth = () => {
 			return
 		}
 
-		const photo = takePhoto()
+		const photo = takePhoto(selectedFilter)
 		if (photo) {
-			const newPhotos = [...photos, photo]
+			const newPhotos = [...photos, { src: photo, filter: 'none' }]
 			setPhotos(newPhotos)
 
 			if (newPhotos.length < 3) {
@@ -54,6 +62,9 @@ export const PhotoBooth = () => {
 				}, 1000)
 			} else {
 				setCountdownActive(false)
+				setShowPreview(true)
+				setIsCapturing(false)
+				stopCamera()
 			}
 		} else {
 			console.error("Failed to take photo")
@@ -152,6 +163,34 @@ export const PhotoBooth = () => {
 									initial={{ x: -20 }}
 									animate={{ x: 0 }}
 								>
+									{isCapturing && !showPreview && (
+										<div className="mb-4 flex gap-2 justify-center">
+											<Button
+												variant={selectedFilter === 'none' ? 'default' : 'outline'}
+												onClick={() => setSelectedFilter('none')}
+											>
+												Normal
+											</Button>
+											<Button
+												variant={selectedFilter === 'bw' ? 'default' : 'outline'}
+												onClick={() => setSelectedFilter('bw')}
+											>
+												B&W
+											</Button>
+											<Button
+												variant={selectedFilter === 'sepia' ? 'default' : 'outline'}
+												onClick={() => setSelectedFilter('sepia')}
+											>
+												Sepia
+											</Button>
+											<Button
+												variant={selectedFilter === 'vintage' ? 'default' : 'outline'}
+												onClick={() => setSelectedFilter('vintage')}
+											>
+												Vintage
+											</Button>
+										</div>
+									)}
 									<div className="relative aspect-square border-2 border-black bg-black rounded-lg shadow-lg overflow-hidden mb-4">
 										{!isActive && !error && (
 											<div className="absolute inset-0 flex items-center justify-center">
@@ -185,6 +224,7 @@ export const PhotoBooth = () => {
 											autoPlay
 											playsInline
 											muted
+											style={{ filter: filterStyles[selectedFilter] }}
 											className="absolute inset-0 w-full h-full object-cover transform scale-x-[-1]"
 										/>
 										{countdownActive && (
@@ -276,9 +316,10 @@ export const PhotoBooth = () => {
 													<motion.img
 														initial={{ scale: 1.2 }}
 														animate={{ scale: 1 }}
-														src={photo}
+														src={photo.src}
 														alt={`Photo ${index + 1}`}
 														className="w-full h-full object-cover"
+														style={{ filter: filterStyles[photo.filter] }}
 													/>
 												</motion.div>
 											))}

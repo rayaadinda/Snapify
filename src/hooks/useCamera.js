@@ -106,7 +106,7 @@ export const useCamera = () => {
     setError(null);
   }, []);
 
-  const takePhoto = useCallback(() => {
+  const takePhoto = useCallback((filter = 'none') => {
     if (!videoRef.current || !isReady) {
       console.log('Camera not ready:', { isReady, hasVideo: !!videoRef.current });
       return null;
@@ -150,9 +150,53 @@ export const useCamera = () => {
       // Reset transform
       ctx.setTransform(1, 0, 0, 1, 0, 0);
 
-      const photo = canvas.toDataURL('image/jpeg', 0.9);
-      console.log('Photo taken successfully');
-      return photo;
+      // Apply filter effects
+      if (filter !== 'none') {
+        // Create a temporary canvas to apply filters
+        const tempCanvas = document.createElement('canvas');
+        tempCanvas.width = size;
+        tempCanvas.height = size;
+        const tempCtx = tempCanvas.getContext('2d');
+        
+        if (tempCtx) {
+          // Draw the original image
+          tempCtx.drawImage(canvas, 0, 0);
+          
+          // Get image data
+          const imageData = tempCtx.getImageData(0, 0, size, size);
+          const data = imageData.data;
+          
+          // Apply filters
+          for (let i = 0; i < data.length; i += 4) {
+            const r = data[i];
+            const g = data[i + 1];
+            const b = data[i + 2];
+            
+            if (filter === 'bw') {
+              const gray = 0.2989 * r + 0.5870 * g + 0.1140 * b;
+              data[i] = gray;
+              data[i + 1] = gray;
+              data[i + 2] = gray;
+            } else if (filter === 'sepia') {
+              data[i] = Math.min(255, (r * 0.393) + (g * 0.769) + (b * 0.189));
+              data[i + 1] = Math.min(255, (r * 0.349) + (g * 0.686) + (b * 0.168));
+              data[i + 2] = Math.min(255, (r * 0.272) + (g * 0.534) + (b * 0.131));
+            } else if (filter === 'vintage') {
+              data[i] = Math.min(255, (r * 0.5) + (g * 0.5) + (b * 0.5) + 30);
+              data[i + 1] = Math.min(255, (r * 0.4) + (g * 0.4) + (b * 0.4) + 20);
+              data[i + 2] = Math.min(255, (r * 0.3) + (g * 0.3) + (b * 0.3));
+            }
+          }
+          
+          // Put the filtered image data back
+          tempCtx.putImageData(imageData, 0, 0);
+          
+          // Draw the filtered image back to the main canvas
+          ctx.drawImage(tempCanvas, 0, 0);
+        }
+      }
+
+      return canvas.toDataURL('image/jpeg', 0.95);
     } catch (err) {
       console.error('Error taking photo:', err);
       return null;
