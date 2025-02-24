@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import logo from "./assets/logo.png"
 import hero from "./assets/hero2.png"
 import { Button } from "./components/ui/button"
@@ -6,13 +6,89 @@ import { PhotoBooth } from "./components/photobooth/PhotoBooth"
 import { PrivacyNotice } from "./components/PrivacyNotice"
 import { Analytics } from "@vercel/analytics/react"
 import { motion, AnimatePresence } from "framer-motion"
+import { Toaster, toast } from 'react-hot-toast'
+
+
+const APP_VERSION = '1.1.0' 
+const APP_VERSION_KEY = 'snapify-version'
 
 function App() {
 	const [showPhotoBooth, setShowPhotoBooth] = useState(false)
 
+	useEffect(() => {
+		const lastVersion = localStorage.getItem(APP_VERSION_KEY)
+		if (!lastVersion || lastVersion !== APP_VERSION) {
+		
+			toast.custom(
+				(t) => (
+					<div
+						className={`${
+							t.visible ? 'animate-enter' : 'animate-leave'
+						} max-w-md w-full bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
+					>
+						<div className="flex-1 w-0 p-4">
+							<div className="flex items-start">
+								<div className="flex-shrink-0 pt-0.5">
+									<img
+										className="h-10 w-10 rounded-full"
+										src={logo}
+										alt="Snapify"
+									/>
+								</div>
+								<div className="ml-3 flex-1">
+									<p className="text-sm font-semibold text-black">
+										New Features Available! 🎉
+									</p>
+									<p className="mt-1 text-sm font-medium text-gray-500">
+										• New photo filters: B&W & Vintage
+										<br />
+										• Improved photo quality
+										<br />
+										• Better filter preview
+									</p>
+								</div>
+							</div>
+						</div>
+						<div className="flex border-l border-gray-200">
+							<button
+								onClick={() => toast.dismiss(t.id)}
+								className="p-2 border border-transparent rounded-r-lg flex items-center justify-center text-gray-400 hover:text-gray-500 focus:outline-none"
+							>
+								<svg
+									className="h-5 w-5"
+									xmlns="http://www.w3.org/2000/svg"
+									fill="none"
+									viewBox="0 0 24 24"
+									stroke="red"
+									aria-hidden="true"
+								>
+									<path
+										strokeLinecap="round"
+										strokeLinejoin="round"
+										strokeWidth="2"
+										d="M6 18L18 6M6 6l12 12"
+									/>
+								</svg>
+								<span className="sr-only">Close</span>
+							</button>
+						</div>
+					</div>
+				),
+				{
+					duration: 5000,
+					position: 'top-center',
+				}
+			)
+
+			// Save the current version
+			localStorage.setItem(APP_VERSION_KEY, APP_VERSION)
+		}
+	}, [])
+
 	if (showPhotoBooth) {
 		return (
 			<div className="min-h-screen bg-white">
+				<Toaster />
 				<div className="w-full max-w-6xl mx-auto px-4 py-6">
 					<div className="flex items-center justify-between mb-8">
 						<div
@@ -43,6 +119,7 @@ function App() {
 
 	return (
 		<div className="min-h-screen flex flex-col bg-white">
+			<Toaster />
 			<div className="flex flex-col min-h-screen bg-white px-4 py-6">
 				<div className="w-full max-w-6xl mx-auto mb-8 md:mb-16">
 					<div className="flex items-center">
