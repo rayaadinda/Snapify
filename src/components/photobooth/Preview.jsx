@@ -66,11 +66,11 @@ export const Preview = ({ photos, template: initialTemplate, onBack }) => {
           style={template.styles}
         >
           {renderDecorations()}
-            {photos.map((photo, index) => (
-              <div
-                key={index}
+          {photos.map((photo, index) => (
+            <div
+              key={index}
                 className={template.styles.photo}
-              >
+            >
                 <img
                   src={photo.src}
                   alt={`Photo ${index + 1}`}
@@ -78,7 +78,7 @@ export const Preview = ({ photos, template: initialTemplate, onBack }) => {
                   style={{ filter: filterStyles[photo.filter] }}
                 />
               </div>
-            ))}
+          ))}
         </div>
       </div>
 

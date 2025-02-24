@@ -8,7 +8,21 @@ export const PHOTO_STRIP_TEMPLATES = [
 			photo: "rounded-none mb-2",
 			background: "#ffffff",
 			decorations: [
-				"absolute bottom-4 left-0 right-0 text-center font-['Noto_Serif'] italic text-black text-xl",
+				"absolute bottom-4 left-0 right-0 text-center font-['Daniel']  text-black text-xl",
+			],
+			decorationContent: ["Snapify"],
+		},
+	},
+	{
+		id: "black",
+		name: "Black",
+		background: "black",
+		styles: {
+			container: "bg-black p-2 w-[200px] pb-20 shadow-lg relative",
+			photo: "rounded-none mb-2",
+			background: "#1E1E1E",
+			decorations: [
+				"absolute bottom-4 left-0 right-0 text-center font-['Daniel']  text-white text-xl",
 			],
 			decorationContent: ["Snapify"],
 		},
