@@ -115,7 +115,7 @@ export const PhotoBooth = () => {
 			return
 		}
 
-		const photo = takePhoto(selectedFilter)
+		const photo = takePhoto(selectedFilter, facingMode)
 		if (photo) {
 			const newPhotos = [...photos, { src: photo, filter: "none" }]
 			setPhotos(newPhotos)

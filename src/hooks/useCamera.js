@@ -65,7 +65,7 @@ export const useCamera = () => {
 	}, [cleanupCamera])
 
 	const takePhoto = useCallback(
-		(filter = "none") => {
+		(filter = "none", facingMode = "user") => {
 			if (!videoRef.current || !isReady) {
 				console.log("Camera not ready:", {
 					isReady,
@@ -77,7 +77,6 @@ export const useCamera = () => {
 			try {
 				const video = videoRef.current
 
-				// Make sure video dimensions are available
 				if (!video.videoWidth || !video.videoHeight) {
 					console.log("Video dimensions not ready")
 					return null
@@ -95,13 +94,14 @@ export const useCamera = () => {
 					return null
 				}
 
-				// Center crop the video frame
 				const xStart = (video.videoWidth - size) / 2
 				const yStart = (video.videoHeight - size) / 2
 
-				// Mirror the context for front camera
-				ctx.scale(-1, 1)
-				ctx.translate(-size, 0)
+				// Only mirror for front-facing camera
+				if (facingMode === "user") {
+					ctx.scale(-1, 1)
+					ctx.translate(-size, 0)
+				}
 
 				ctx.drawImage(video, xStart, yStart, size, size, 0, 0, size, size)
 
@@ -117,14 +117,11 @@ export const useCamera = () => {
 					const tempCtx = tempCanvas.getContext("2d")
 
 					if (tempCtx) {
-						// Draw the original image
 						tempCtx.drawImage(canvas, 0, 0)
 
-						// Get image data
 						const imageData = tempCtx.getImageData(0, 0, size, size)
 						const data = imageData.data
 
-						// Apply filters
 						for (let i = 0; i < data.length; i += 4) {
 							const r = data[i]
 							const g = data[i + 1]
@@ -146,10 +143,8 @@ export const useCamera = () => {
 							}
 						}
 
-						// Put the filtered image data back
 						tempCtx.putImageData(imageData, 0, 0)
 
-						// Draw the filtered image back to the main canvas
 						ctx.drawImage(tempCanvas, 0, 0)
 					}
 				}
