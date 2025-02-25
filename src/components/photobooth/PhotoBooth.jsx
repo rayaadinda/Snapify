@@ -65,65 +65,35 @@ export const PhotoBooth = () => {
 		golden: "Golden Hour",
 	}
 
-	useEffect(() => {
-		return () => {
-			stopCamera()
-		}
-	}, [stopCamera])
-
-	useEffect(() => {
-		const checkFlashSupport = async () => {
-			try {
-				const stream = await navigator.mediaDevices.getUserMedia({
-					video: {
-						facingMode: "environment",
-						advanced: [{ torch: true }],
-					},
-				})
-
-				const track = stream.getVideoTracks()[0]
-				const capabilities = track.getCapabilities()
-				const settings = track.getSettings()
-
-				// Check if torch/flash is supported
-				setFlashSupported("torch" in capabilities || "torch" in settings)
-
-				// Clean up stream
-				stream.getTracks().forEach((track) => track.stop())
-			} catch (err) {
-				console.error("Error checking flash support:", err)
-				setFlashSupported(false)
-			}
-		}
-
-		checkFlashSupport()
-	}, [])
-
-	useEffect(() => {
-		const toggleFlash = async () => {
-			if (!videoRef.current) return
-
-			try {
-				const track = videoRef.current.srcObject?.getVideoTracks()[0]
-				if (track) {
-					await track.applyConstraints({
-						advanced: [{ torch: flashEnabled }],
-					})
-				}
-			} catch (err) {
-				console.error("Error toggling flash:", err)
-				setFlashEnabled(false)
-			}
-		}
-
-		if (isActive) {
-			toggleFlash()
-		}
-	}, [flashEnabled, isActive])
-
 	const handleStartSession = async () => {
 		setIsCapturing(true)
-		await startCamera()
+		try {
+			await startCamera()
+			// Check flash support only after camera is started
+			const flashSupported = await checkFlashSupport(
+				videoRef.current?.srcObject
+			)
+			setFlashSupported(flashSupported)
+		} catch (err) {
+			setIsCapturing(false)
+			// Error handling is already done in useCamera hook
+		}
+	}
+
+	// Move checkFlashSupport to a separate function
+	const checkFlashSupport = async (stream) => {
+		if (!stream) return false
+
+		try {
+			const track = stream.getVideoTracks()[0]
+			const capabilities = track.getCapabilities()
+			const settings = track.getSettings()
+
+			return "torch" in capabilities || "torch" in settings
+		} catch (err) {
+			console.error("Error checking flash support:", err)
+			return false
+		}
 	}
 
 	const handleCapture = () => {
