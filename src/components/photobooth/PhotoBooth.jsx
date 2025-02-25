@@ -17,6 +17,7 @@ import {
 	Moon,
 	Sunset,
 	Clock,
+	RefreshCw,
 } from "lucide-react"
 
 export const PhotoBooth = () => {
@@ -39,6 +40,7 @@ export const PhotoBooth = () => {
 	const [selectedFilter, setSelectedFilter] = useState("none") // none, bw, sepia, vintage
 	const [flashSupported, setFlashSupported] = useState(false)
 	const [flashEnabled, setFlashEnabled] = useState(false)
+	const [facingMode, setFacingMode] = useState("user")
 
 	const filterStyles = {
 		none: "",
@@ -68,19 +70,30 @@ export const PhotoBooth = () => {
 	const handleStartSession = async () => {
 		setIsCapturing(true)
 		try {
-			await startCamera()
-			// Check flash support only after camera is started
+			await startCamera(facingMode)
 			const flashSupported = await checkFlashSupport(
 				videoRef.current?.srcObject
 			)
 			setFlashSupported(flashSupported)
 		} catch (err) {
 			setIsCapturing(false)
-			// Error handling is already done in useCamera hook
 		}
 	}
 
-	// Move checkFlashSupport to a separate function
+	const handleFlipCamera = async () => {
+		const newFacingMode = facingMode === "user" ? "environment" : "user"
+		setFacingMode(newFacingMode)
+		try {
+			await startCamera(newFacingMode)
+			const flashSupported = await checkFlashSupport(
+				videoRef.current?.srcObject
+			)
+			setFlashSupported(flashSupported)
+		} catch (err) {
+			console.error("Error flipping camera:", err)
+		}
+	}
+
 	const checkFlashSupport = async (stream) => {
 		if (!stream) return false
 
@@ -292,17 +305,11 @@ export const PhotoBooth = () => {
 												<Button
 													variant="outline"
 													size="icon"
-													onClick={() => setFlashEnabled(!flashEnabled)}
+													onClick={handleFlipCamera}
 													className="w-10 h-10"
-													title={
-														flashEnabled ? "Turn Flash Off" : "Turn Flash On"
-													}
+													title="Flip Camera"
 												>
-													{flashEnabled ? (
-														<Zap className="h-8 w-8" />
-													) : (
-														<ZapOff className="h-8 w-8" />
-													)}
+													<RefreshCw className="h-8 w-8" />
 												</Button>
 											</motion.div>
 											<motion.div

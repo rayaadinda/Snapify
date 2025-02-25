@@ -22,15 +22,18 @@ export const useCamera = () => {
 		}
 	}, [cleanupCamera])
 
-	const startCamera = async () => {
+	const startCamera = async (facingMode = "user") => {
 		cleanupCamera()
 
 		try {
 			const stream = await navigator.mediaDevices.getUserMedia({
 				video: {
-					facingMode: "user",
+					facingMode: facingMode,
 					width: { ideal: 1920 },
 					height: { ideal: 1080 },
+					...(facingMode === "environment" && {
+						advanced: [{ torch: false }],
+					}),
 				},
 			})
 
@@ -160,11 +163,25 @@ export const useCamera = () => {
 		[isReady]
 	)
 
+	const toggleFlash = useCallback(async (enabled) => {
+		if (!videoRef.current?.srcObject) return
+
+		try {
+			const track = videoRef.current.srcObject.getVideoTracks()[0]
+			await track.applyConstraints({
+				advanced: [{ torch: enabled }],
+			})
+		} catch (err) {
+			console.error("Error toggling flash:", err)
+		}
+	}, [])
+
 	return {
 		videoRef,
 		startCamera,
 		stopCamera,
 		takePhoto,
+		toggleFlash,
 		isActive,
 		isReady,
 		error,
