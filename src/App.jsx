@@ -8,7 +8,7 @@ import { Analytics } from "@vercel/analytics/react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Toaster, toast } from "sonner"
 
-const APP_VERSION = "1.5.0"
+const APP_VERSION = "1.6.0"
 const APP_VERSION_KEY = "snapify-version"
 
 function App() {
@@ -19,7 +19,7 @@ function App() {
 		if (!lastVersion || lastVersion !== APP_VERSION) {
 			toast.info("Snapify just got even better!", {
 				description:
-					"We've added new frames, flash support, and filters to make your photos pop!",
+					"We've added new frames, rear camera support, and new filters to make your photos pop!",
 				duration: 6000,
 			})
 			localStorage.setItem(APP_VERSION_KEY, APP_VERSION)
