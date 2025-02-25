@@ -220,7 +220,7 @@ export const PhotoBooth = () => {
 								className="relative flex flex-col w-full gap-4"
 							>
 								{isActive && (
-									<div className="absolute left-0 md:left-auto md:left-[-4rem] top-0 md:top-1/2 md:-translate-y-1/2 flex md:flex-col flex-row gap-1 bg-white/80 backdrop-blur-sm p-0.5 sm:p-1 rounded-lg h-fit z-10">
+									<div className="absolute left-0 md:left-[-4rem] top-0 md:top-1/2 md:-translate-y-1/2 flex md:flex-col flex-row gap-1 bg-white/80 backdrop-blur-sm p-0.5 sm:p-1 rounded-lg h-fit z-10">
 										<span className="hidden sm:block text-[10px] font-medium text-gray-600 text-center mb-1">
 											Filters
 										</span>
