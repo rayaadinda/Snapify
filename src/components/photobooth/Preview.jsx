@@ -4,7 +4,7 @@ import html2canvas from "html2canvas"
 import { motion } from "framer-motion"
 import { PHOTO_STRIP_TEMPLATES } from "@/constants/templates"
 
-export const Preview = ({ photos, template: initialTemplate, onBack }) => {
+export const Preview = ({ photos, template: initialTemplate }) => {
 	const stripRef = useRef(null)
 	const [template, setTemplate] = useState(initialTemplate)
 	const [quality, setQuality] = useState("high") // 'standard' or 'high'
@@ -84,7 +84,7 @@ export const Preview = ({ photos, template: initialTemplate, onBack }) => {
 
 			<div className="flex flex-col flex-1 max-w-md gap-6">
 				<div>
-					<h2 className="text-xl font-semibold mb-4">Choose Template</h2>
+					<h2 className="text-xl font-semibold mb-4">Choose Frame</h2>
 					<div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
 						{PHOTO_STRIP_TEMPLATES.map((t) => (
 							<Button
@@ -103,42 +103,44 @@ export const Preview = ({ photos, template: initialTemplate, onBack }) => {
 					</div>
 				</div>
 
-				<div className="space-y-4 w-full">
-					<div className="flex flex-col space-y-2">
-						<label className="text-sm font-medium">Download Quality:</label>
-						<div className="flex gap-2">
-							<Button
-								variant={quality === "standard" ? "default" : "outline"}
-								onClick={() => setQuality("standard")}
-								className="flex-1"
-							>
-								Standard
-								<span className="ml-1 text-xs opacity-70">(2x)</span>
-							</Button>
-							<Button
-								variant={quality === "high" ? "default" : "outline"}
-								onClick={() => setQuality("high")}
-								className="flex-1"
-							>
-								High Quality
-								<span className="ml-1 text-xs opacity-70">(4x)</span>
-							</Button>
-						</div>
-					</div>
-					<Button onClick={handleDownload} className="w-full">
-						Download Photo Strip
-					</Button>
-				</div>
-
 				<div>
-					<h2 className="text-xl font-semibold mb-4">Actions</h2>
-					<div className="flex flex-col sm:flex-row gap-3">
+					<h2 className="text-xl font-semibold mb-4">Download Quality</h2>
+					<div className="grid grid-cols-2 gap-2 mb-6">
+						<Button
+							variant={quality === "standard" ? "default" : "outline"}
+							onClick={() => setQuality("standard")}
+							className={`w-full ${
+								quality === "standard"
+									? "bg-black text-white"
+									: "hover:bg-black/5"
+							}`}
+						>
+							Standard (2x)
+						</Button>
+						<Button
+							variant={quality === "high" ? "default" : "outline"}
+							onClick={() => setQuality("high")}
+							className={`w-full ${
+								quality === "high" ? "bg-black text-white" : "hover:bg-black/5"
+							}`}
+						>
+							High Quality (4x)
+						</Button>
+					</div>
+
+					<div className="grid grid-cols-2 gap-2">
 						<Button
 							variant="outline"
-							onClick={onBack}
-							className="flex-1 border-black text-black hover:bg-black hover:text-white"
+							onClick={() => window.location.reload()}
+							className="w-full hover:bg-black/5"
 						>
 							Take New Photos
+						</Button>
+						<Button
+							onClick={handleDownload}
+							className="w-full bg-black text-white hover:bg-black/90"
+						>
+							Download
 						</Button>
 					</div>
 				</div>
