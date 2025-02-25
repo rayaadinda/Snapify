@@ -28,6 +28,34 @@ export const PHOTO_STRIP_TEMPLATES = [
 		},
 	},
 	{
+		id: "Niki Backburner",
+		name: "Niki Backburner",
+		background: "white",
+		styles: {
+			container: "bg-white p-2 w-[200px] pb-20 shadow-lg relative",
+			photo: "rounded-none mb-2",
+			background: "#ffffff",
+			decorations: [
+				"absolute bottom-2 p-2 text-right font-['Daniel']  text-[#3367EB] text-sm whitespace-pre-line",
+			],
+			decorationContent: ["hey are you still there?\nGood"],
+		},
+	},
+	{
+		id: "Niki Paths",
+		name: "Niki Paths",
+		background: "white",
+		styles: {
+			container: "bg-black p-2 w-[200px] pb-20 shadow-lg relative",
+			photo: "rounded-none mb-2",
+			background: "#000000",
+			decorations: [
+				"absolute bottom-2 p-2 text-center font-['Daniel']  text-white text-sm",
+			],
+			decorationContent: ["I hope our paths cross again"],
+		},
+	},
+	{
 		id: "y2k",
 		name: "Y2K Vibes",
 		background: "gradient",
