@@ -6,11 +6,10 @@ import { PhotoBooth } from "./components/photobooth/PhotoBooth"
 import { PrivacyNotice } from "./components/PrivacyNotice"
 import { Analytics } from "@vercel/analytics/react"
 import { motion, AnimatePresence } from "framer-motion"
-import { Toaster, toast } from 'react-hot-toast'
+import { Toaster, toast } from "react-hot-toast"
 
-
-const APP_VERSION = '1.2.0' 
-const APP_VERSION_KEY = 'snapify-version'
+const APP_VERSION = "1.2.0"
+const APP_VERSION_KEY = "snapify-version"
 
 function App() {
 	const [showPhotoBooth, setShowPhotoBooth] = useState(false)
@@ -18,12 +17,11 @@ function App() {
 	useEffect(() => {
 		const lastVersion = localStorage.getItem(APP_VERSION_KEY)
 		if (!lastVersion || lastVersion !== APP_VERSION) {
-		
 			toast.custom(
 				(t) => (
 					<div
 						className={`${
-							t.visible ? 'animate-enter' : 'animate-leave'
+							t.visible ? "animate-enter" : "animate-leave"
 						} max-w-md w-full bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
 					>
 						<div className="flex-1 w-0 p-4">
@@ -37,10 +35,11 @@ function App() {
 								</div>
 								<div className="ml-3 flex-1">
 									<p className="text-sm font-semibold text-black">
-										New Features Available! 🎉
+										New template Available! 🎉
 									</p>
 									<p className="mt-1 text-sm font-medium text-gray-500">
-										• New photo template
+										• Niki Backburner
+										<br />• Niki Paths
 									</p>
 								</div>
 							</div>
@@ -72,7 +71,7 @@ function App() {
 				),
 				{
 					duration: 5000,
-					position: 'top-center',
+					position: "top-center",
 				}
 			)
 
