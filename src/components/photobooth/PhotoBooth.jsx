@@ -74,13 +74,22 @@ export const PhotoBooth = () => {
 	useEffect(() => {
 		const checkFlashSupport = async () => {
 			try {
-				const devices = await navigator.mediaDevices.enumerateDevices()
-				const cameras = devices.filter((device) => device.kind === "videoinput")
-				if (cameras.length > 0) {
-					const capabilities =
-						await navigator.mediaDevices.getSupportedConstraints()
-					setFlashSupported(capabilities.torch || false)
-				}
+				const stream = await navigator.mediaDevices.getUserMedia({
+					video: {
+						facingMode: "environment",
+						advanced: [{ torch: true }],
+					},
+				})
+
+				const track = stream.getVideoTracks()[0]
+				const capabilities = track.getCapabilities()
+				const settings = track.getSettings()
+
+				// Check if torch/flash is supported
+				setFlashSupported("torch" in capabilities || "torch" in settings)
+
+				// Clean up stream
+				stream.getTracks().forEach((track) => track.stop())
 			} catch (err) {
 				console.error("Error checking flash support:", err)
 				setFlashSupported(false)
@@ -89,6 +98,28 @@ export const PhotoBooth = () => {
 
 		checkFlashSupport()
 	}, [])
+
+	useEffect(() => {
+		const toggleFlash = async () => {
+			if (!videoRef.current) return
+
+			try {
+				const track = videoRef.current.srcObject?.getVideoTracks()[0]
+				if (track) {
+					await track.applyConstraints({
+						advanced: [{ torch: flashEnabled }],
+					})
+				}
+			} catch (err) {
+				console.error("Error toggling flash:", err)
+				setFlashEnabled(false)
+			}
+		}
+
+		if (isActive) {
+			toggleFlash()
+		}
+	}, [flashEnabled, isActive])
 
 	const handleStartSession = async () => {
 		setIsCapturing(true)
@@ -288,23 +319,21 @@ export const PhotoBooth = () => {
 												whileTap={{ scale: 0.95 }}
 												className="flex gap-2 items-center justify-center"
 											>
-												{flashSupported && (
-													<Button
-														variant="outline"
-														size="icon"
-														onClick={() => setFlashEnabled(!flashEnabled)}
-														className="w-10 h-10"
-														title={
-															flashEnabled ? "Turn Flash Off" : "Turn Flash On"
-														}
-													>
-														{flashEnabled ? (
-															<Zap className="h-8 w-8" />
-														) : (
-															<ZapOff className="h-8 w-8" />
-														)}
-													</Button>
-												)}
+												<Button
+													variant="outline"
+													size="icon"
+													onClick={() => setFlashEnabled(!flashEnabled)}
+													className="w-10 h-10"
+													title={
+														flashEnabled ? "Turn Flash Off" : "Turn Flash On"
+													}
+												>
+													{flashEnabled ? (
+														<Zap className="h-8 w-8" />
+													) : (
+														<ZapOff className="h-8 w-8" />
+													)}
+												</Button>
 											</motion.div>
 											<motion.div
 												whileHover={{ scale: 1.05 }}
@@ -312,7 +341,7 @@ export const PhotoBooth = () => {
 											>
 												<Button
 													onClick={startPhotoSequence}
-													className="px-8 py-6 bg-black text-white hover:bg-black/90"
+													className="px-4 py-3 bg-black text-white hover:bg-black/90"
 													disabled={!isReady || countdownActive}
 												>
 													Take Photo {photos.length + 1}/3
