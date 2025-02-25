@@ -24,14 +24,14 @@ export const PhotoBooth = () => {
 	const [isCapturing, setIsCapturing] = useState(false)
 	const [showPreview, setShowPreview] = useState(false)
 	const [countdownActive, setCountdownActive] = useState(false)
-	const [selectedFilter, setSelectedFilter] = useState('none'); // none, bw, sepia, vintage
+	const [selectedFilter, setSelectedFilter] = useState("none") // none, bw, sepia, vintage
 
 	const filterStyles = {
-		none: '',
-		bw: 'grayscale(100%)',
-		sepia: 'sepia(100%)',
-		vintage: 'sepia(50%) contrast(85%) brightness(90%)',
-	};
+		none: "",
+		bw: "grayscale(100%)",
+		sepia: "sepia(100%)",
+		vintage: "sepia(50%) contrast(85%) brightness(90%)",
+	}
 
 	useEffect(() => {
 		return () => {
@@ -52,7 +52,7 @@ export const PhotoBooth = () => {
 
 		const photo = takePhoto(selectedFilter)
 		if (photo) {
-			const newPhotos = [...photos, { src: photo, filter: 'none' }]
+			const newPhotos = [...photos, { src: photo, filter: "none" }]
 			setPhotos(newPhotos)
 
 			if (newPhotos.length < 3) {
@@ -82,13 +82,6 @@ export const PhotoBooth = () => {
 	const handleCountdownComplete = () => {
 		setCountdownActive(false)
 		handleCapture()
-	}
-
-	const handleReset = () => {
-		setPhotos([])
-		setShowPreview(false)
-		stopCamera()
-		setIsCapturing(false)
 	}
 
 	const handleNext = () => {
@@ -166,26 +159,34 @@ export const PhotoBooth = () => {
 									{isCapturing && !showPreview && (
 										<div className="mb-4 flex gap-2 justify-center">
 											<Button
-												variant={selectedFilter === 'none' ? 'default' : 'outline'}
-												onClick={() => setSelectedFilter('none')}
+												variant={
+													selectedFilter === "none" ? "default" : "outline"
+												}
+												onClick={() => setSelectedFilter("none")}
 											>
 												Normal
 											</Button>
 											<Button
-												variant={selectedFilter === 'bw' ? 'default' : 'outline'}
-												onClick={() => setSelectedFilter('bw')}
+												variant={
+													selectedFilter === "bw" ? "default" : "outline"
+												}
+												onClick={() => setSelectedFilter("bw")}
 											>
 												B&W
 											</Button>
 											<Button
-												variant={selectedFilter === 'sepia' ? 'default' : 'outline'}
-												onClick={() => setSelectedFilter('sepia')}
+												variant={
+													selectedFilter === "sepia" ? "default" : "outline"
+												}
+												onClick={() => setSelectedFilter("sepia")}
 											>
 												Sepia
 											</Button>
 											<Button
-												variant={selectedFilter === 'vintage' ? 'default' : 'outline'}
-												onClick={() => setSelectedFilter('vintage')}
+												variant={
+													selectedFilter === "vintage" ? "default" : "outline"
+												}
+												onClick={() => setSelectedFilter("vintage")}
 											>
 												Vintage
 											</Button>
@@ -238,28 +239,6 @@ export const PhotoBooth = () => {
 										animate={{ y: 0, opacity: 1 }}
 										transition={{ delay: 0.2 }}
 									>
-										<motion.button
-											whileHover={{ scale: 1.1 }}
-											whileTap={{ scale: 0.9 }}
-											onClick={handleReset}
-											className="p-2 hover:bg-gray-100 rounded-full"
-											title="Reset Photos"
-										>
-											<svg
-												className="w-6 h-6"
-												fill="none"
-												stroke="currentColor"
-												viewBox="0 0 24 24"
-											>
-												<path
-													strokeLinecap="round"
-													strokeLinejoin="round"
-													strokeWidth="2"
-													d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-												/>
-											</svg>
-										</motion.button>
-
 										<motion.div
 											whileHover={{ scale: 1.05 }}
 											whileTap={{ scale: 0.95 }}
@@ -358,7 +337,9 @@ export const PhotoBooth = () => {
 														d="M5 13l4 4L19 7"
 													/>
 												</svg>
-												<span>Take 3 unique photos in sequence - completely free!</span>
+												<span>
+													Take 3 unique photos in sequence - completely free!
+												</span>
 											</li>
 											<li className="flex items-start gap-3">
 												<svg
@@ -374,7 +355,9 @@ export const PhotoBooth = () => {
 														d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
 													/>
 												</svg>
-												<span>Enjoy a fun 3-second countdown between shots</span>
+												<span>
+													Enjoy a fun 3-second countdown between shots
+												</span>
 											</li>
 											<li className="flex items-start gap-3">
 												<svg
@@ -406,7 +389,9 @@ export const PhotoBooth = () => {
 														d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
 													/>
 												</svg>
-												<span>Download your photo strips instantly - no cost!</span>
+												<span>
+													Download your photo strips instantly - no cost!
+												</span>
 											</li>
 										</ul>
 									</div>
