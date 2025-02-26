@@ -3,12 +3,11 @@ import logo from "./assets/logo.png"
 import hero from "./assets/hero2.png"
 import { Button } from "./components/ui/button"
 import { PhotoBooth } from "./components/photobooth/PhotoBooth"
-import { PrivacyNotice } from "./components/PrivacyNotice"
 import { Analytics } from "@vercel/analytics/react"
-import { motion, AnimatePresence } from "framer-motion"
+import { motion } from "framer-motion"
 import { Toaster, toast } from "sonner"
 
-const APP_VERSION = "1.6.0"
+const APP_VERSION = "1.7.0"
 const APP_VERSION_KEY = "snapify-version"
 
 function App() {
@@ -19,8 +18,8 @@ function App() {
 		if (!lastVersion || lastVersion !== APP_VERSION) {
 			toast.info("Snapify just got even better!", {
 				description:
-					"We've added new frames, rear camera support, and new filters to make your photos pop!",
-				duration: 6000,
+					"We've added exciting new frames including NewJeans, Wave to Earth, and NIKI-inspired designs! Plus rear camera support and new filters.",
+				duration: 8000,
 			})
 			localStorage.setItem(APP_VERSION_KEY, APP_VERSION)
 		}
@@ -32,10 +31,42 @@ function App() {
 				<Toaster
 					position="top-center"
 					richColors
+					theme="light"
+					closeButton
 					toastOptions={{
 						className: "font-inter",
 						style: {
 							fontFamily: "Inter, sans-serif",
+							borderRadius: "8px",
+							border: "1px solid #f0f0f0",
+							padding: "16px",
+							boxShadow: "0 4px 12px rgba(0, 0, 0, 0.05)",
+							maxWidth: "420px",
+							fontSize: "14px",
+						},
+						success: {
+							style: {
+								backgroundColor: "#f7fdf7",
+								borderColor: "#e6f7e6",
+							},
+						},
+						info: {
+							style: {
+								backgroundColor: "#f7fafd",
+								borderColor: "#e6eef7",
+							},
+						},
+						error: {
+							style: {
+								backgroundColor: "#fdf7f7",
+								borderColor: "#f7e6e6",
+							},
+						},
+						warning: {
+							style: {
+								backgroundColor: "#fffcf3",
+								borderColor: "#faf0d1",
+							},
 						},
 					}}
 				/>
@@ -71,10 +102,42 @@ function App() {
 			<Toaster
 				position="top-center"
 				richColors
+				theme="light"
+				closeButton
 				toastOptions={{
 					className: "font-inter",
 					style: {
 						fontFamily: "Inter, sans-serif",
+						borderRadius: "8px",
+						border: "1px solid #f0f0f0",
+						padding: "16px",
+						boxShadow: "0 4px 12px rgba(0, 0, 0, 0.05)",
+						maxWidth: "420px",
+						fontSize: "14px",
+					},
+					success: {
+						style: {
+							backgroundColor: "#f7fdf7",
+							borderColor: "#e6f7e6",
+						},
+					},
+					info: {
+						style: {
+							backgroundColor: "#f7fafd",
+							borderColor: "#e6eef7",
+						},
+					},
+					error: {
+						style: {
+							backgroundColor: "#fdf7f7",
+							borderColor: "#f7e6e6",
+						},
+					},
+					warning: {
+						style: {
+							backgroundColor: "#fffcf3",
+							borderColor: "#faf0d1",
+						},
 					},
 				}}
 			/>
